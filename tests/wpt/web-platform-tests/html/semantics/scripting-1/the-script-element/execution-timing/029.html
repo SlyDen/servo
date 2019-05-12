@@ -31,7 +31,10 @@
                   ['inline script #1', 'end script #1', 'inline script #2', 'JS URL']]);
                 t.done();
         }
-        onload = t.step_func(test)
+        // Note: The JS URL should be executed in a task, queued by the task doing the navigation.
+        // Therefore, when the load event fires, the JS URL will not have executed yet.
+        // A time-out is added to ensure the JS URL has executed by the time we run the assertions.
+        onload = t.step_func(function() { t.step_timeout(test, 1000) });
         </script>
 
 </body></html>
