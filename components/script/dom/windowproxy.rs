@@ -436,12 +436,13 @@ impl WindowProxy {
                 Referrer::Client
             };
             // Step 14.5
+            let referrer_policy = target_document.get_referrer_policy();
+            let pipeline_id = target_window.upcast::<GlobalScope>().pipeline_id();
+            let load_data = LoadData::new(url, Some(pipeline_id), Some(referrer), referrer_policy);
             target_window.load_url(
-                url,
                 new,
                 false,
-                referrer,
-                target_document.get_referrer_policy(),
+                load_data
             );
         }
         if noopener {
